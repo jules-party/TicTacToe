@@ -1,31 +1,9 @@
 #include <iostream>
-
-class board {
-    public:
-        char board[3][3] = {
-            {'-', '-', '-'},
-            {'-', '-', '-'},
-            {'-', '-', '-'}
-        };
-};
-
-class playerOne {
-    public:
-        int score = 0;
-        bool isTurn = true;
-        bool haveWon = false;
-};
-
-class playerTwo {
-    public:
-        int score = 0;
-        bool isTurn = false;
-        bool haveWon = false;
-};
+#include "gameInfo.h"
 
 bool canPlace(int row, int column, board& b) {
     if(column > 3 || row > 3) {
-        std::cout << "Number out of range!" << std::endl;
+        printf("Number out of range!\n");
         return false;
     }
 
@@ -37,13 +15,12 @@ bool canPlace(int row, int column, board& b) {
 int placeDown(int row, int column, board &b, playerOne &p1, playerTwo &p2) {
 
     if(canPlace(row-1,column-1, b) == false) {
-        std::cout << "Already Occupied" << std::endl;
+        printf("Already Occupied\n");
         return 1;
     }
 
     if(p1.isTurn == true) {
         b.board[row-1][column-1] = 'x';
-        std::cout << b.board[row][column] << std::endl;
         p1.isTurn = false;
         p2.isTurn = true;
         return 0;
@@ -83,14 +60,14 @@ void printBoard(board &b, playerOne &p1, playerTwo &p2) {
         b.board[2][2]
     );
     if(p1.isTurn == true) {
-        std::cout << "Player One turn" << std::endl;
+        printf("\nPlayer One's Turn\n");
     } else if(p2.isTurn == true) {
-        std::cout << "Player Two turn" << std::endl;
+        printf("\nPlayer Two's Turn\n");
     }
 }
 
 void checkWin(board &b, playerOne &p1, playerTwo &p2) {
-    for(int i=0;i < sizeof(b.board);i++) {
+    for(unsigned int i=0;i < sizeof(b.board)/sizeof(b.board[0]);i++) {
 
         // Horizontal Line
         if(b.board[i][0] == 'x' && b.board[i][1] == 'x' && b.board[i][2] == 'x') {
@@ -135,16 +112,16 @@ int main() {
         printBoard(b, p1, p2);
         
         if(p1.haveWon == true) {
-            std::cout << "Player One Wins!" << std::endl;
+            printf("Player One Wins!\n");
             break;
         } else if (p2.haveWon == true) {
-            std::cout << "Player Two Wins!" << std::endl;
+            printf("Player Two Wins!\n");
             break;
         }
 
-        std::cout << "Row number: ";
+        printf("Row number: ");
         std::cin >> row;
-        std::cout << "Column number: ";
+        printf("Column number: ");
         std::cin >> column;
         placeDown(row, column, b, p1, p2);
 
